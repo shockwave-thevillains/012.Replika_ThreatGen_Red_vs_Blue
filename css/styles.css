@@ -77,6 +77,16 @@ body {
 .ps-title { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
 .ps-sub { font-size: 13px; color: var(--muted); }
 
+.scen-row { margin-bottom: 18px; text-align: left; }
+.scen-row > label { color: var(--muted); font-size: 14px; display: block; margin-bottom: 6px; }
+#scenario {
+  background: var(--panel2); color: var(--txt); border: 1px solid var(--border);
+  padding: 10px 14px; border-radius: 10px; font-size: 14px; font-family: inherit; cursor: pointer; width: 100%;
+}
+.scen-info {
+  margin-top: 10px; font-size: 13px; line-height: 1.5; color: #c7d0e6;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; min-height: 48px;
+}
 .diff-row { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
 .diff-row label { color: var(--muted); font-size: 14px; }
 #difficulty {
@@ -91,6 +101,7 @@ body {
   background: rgba(13,18,34,.85); backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50;
 }
+.scen-badge { font-weight: 700; font-size: 13px; color: #c7d0e6; background: var(--panel2); border: 1px solid var(--border); padding: 5px 12px; border-radius: 16px; }
 .round-info { font-weight: 700; font-size: 15px; }
 .turn-badge { padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 13px; }
 .turn-badge.blue { background: rgba(59,130,246,.2); color: #93c5fd; border: 1px solid var(--blue); }
@@ -139,8 +150,8 @@ body {
 .log::-webkit-scrollbar { width: 6px; }
 .log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-/* network */
-.network { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+/* network — jumlah kolom mengikuti kedalaman skenario (--zcount) */
+.network { display: grid; grid-template-columns: repeat(var(--zcount, 3), minmax(150px, 1fr)); gap: 12px; overflow-x: auto; padding-bottom: 4px; }
 .zone {
   background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px;
   border-top: 3px solid var(--zc, var(--border));
@@ -218,11 +229,10 @@ body {
 @media (max-width: 1100px) {
   .layout { grid-template-columns: 1fr; }
   .action-panel { max-height: none; }
-  .network { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 680px) {
   .side-pick { grid-template-columns: 1fr; }
-  .network { grid-template-columns: 1fr; }
+  .network { grid-template-columns: repeat(var(--zcount, 3), minmax(140px, 1fr)); }
   .menu-card { padding: 24px; }
   .layout { padding: 8px; gap: 8px; }
   .topbar { flex-wrap: wrap; }

@@ -29,6 +29,12 @@
       </button>
     </div>
 
+    <div class="scen-row">
+      <label for="scenario">🗺️ Skenario jaringan:</label>
+      <select id="scenario"></select>
+      <p id="scenInfoMenu" class="scen-info"></p>
+    </div>
+
     <div class="diff-row">
       <label for="difficulty">Tingkat AI lawan:</label>
       <select id="difficulty">
@@ -47,6 +53,7 @@
 <section id="game" class="hidden">
   <header class="topbar">
     <button id="backBtn" class="btn ghost small">← Menu</button>
+    <span id="scenInfo" class="scen-badge">Skenario</span>
     <span id="roundInfo" class="round-info">Ronde 1 / 75</span>
     <span id="turnInfo" class="turn-badge blue">Giliran: BLUE</span>
     <div class="top-right">
@@ -94,20 +101,21 @@
     <button id="closeHelp" class="modal-close">✕</button>
     <h2>❓ Cara Bermain</h2>
     <p>Permainan turn-based: <b>Blue</b> (bertahan) dan <b>Red</b> (menyerang) bergiliran. Tiap giliran Anda punya <b>Action Points (AP)</b> untuk memainkan aksi.</p>
+    <p>Pilih salah satu dari <b>7 skenario jaringan</b> di menu (dari Kantor UKM sederhana sampai Pipa Minyak &amp; Gas yang kompleks). Tiap skenario punya peta, target inti (<b>crown jewel</b>), dan ancaman berbeda.</p>
     <h3>🛡️ Blue Team (Defender)</h3>
     <ul>
       <li>Kelola <b>anggaran</b> &amp; <b>staff</b> untuk membangun pertahanan berlapis.</li>
       <li>Mulai dari <b>Kebijakan &amp; Prosedur</b> → membuka aksi lanjutan.</li>
       <li>Pasang <b>IDS</b> &amp; <b>SIEM</b> untuk mendeteksi serangan → menaikkan <b>Threat Intel</b>.</li>
-      <li><b>Menang bila:</b> Threat Intel capai 100% (Red tertangkap), semua kerentanan ditambal tanpa aset dikuasai, atau bertahan 75 ronde.</li>
-      <li><b>Kalah bila:</b> P/L jatuh ke 0, atau kedua PLC dikuasai Red.</li>
+      <li><b>Menang bila:</b> Threat Intel capai 100% (Red tertangkap), semua kerentanan ditambal tanpa aset dikuasai, atau bertahan sampai batas ronde skenario.</li>
+      <li><b>Kalah bila:</b> P/L jatuh ke 0, atau seluruh aset inti dikuasai Red.</li>
     </ul>
     <h3>👾 Red Team (Attacker)</h3>
     <ul>
       <li>Gunakan <b>Hacker Resources</b>. Mulai <b>OSINT</b> → temukan aset DMZ.</li>
       <li>Jalur: <b>Cyber</b> (scan → exploit → pivot), <b>Social</b> (phishing), <b>Physical</b> (USB drop).</li>
-      <li>Tembus zona demi zona hingga <b>OT</b>, lalu kuasai kedua <b>PLC</b>.</li>
-      <li><b>Menang bila:</b> menguasai kedua PLC, atau menjatuhkan P/L Blue ke 0 (lewat DoS/kompromi).</li>
+      <li>Tembus zona demi zona hingga zona terdalam, lalu kuasai seluruh <b>aset inti (crown jewel)</b>.</li>
+      <li><b>Menang bila:</b> menguasai SELURUH aset inti, atau menjatuhkan P/L Blue ke 0 (lewat DoS/kompromi).</li>
       <li>Hati-hati: aksi di zona ber-IDS bisa terdeteksi &amp; menaikkan Threat Intel Blue.</li>
     </ul>
     <p class="muted">Klik kartu aksi, lalu (bila perlu) klik aset/zona di peta sebagai target.</p>

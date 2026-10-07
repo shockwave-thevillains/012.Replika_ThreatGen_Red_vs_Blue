@@ -39,11 +39,30 @@ Red harus menembus zona demi zona hingga mencapai **OT** dan menguasai **PLC (cr
 
 ---
 
+## 🗺️ Skenario (7 peta, bertingkat kompleksitas)
+
+Pilih skenario di menu. Tiap skenario = peta jaringan berbeda dengan kedalaman zona,
+jumlah aset, dan target (crown jewel) yang berbeda — makin dalam makin kompleks.
+
+| # | Skenario | Tingkat | Lapis | Aset | Target inti |
+|---|---|---|---|---|---|
+| 1 | 🏢 Kantor UKM | Intro | 2 | 6 | File/DB server + NAS backup |
+| 2 | 💧 Instalasi Air Minum (ICS) | Standar | 3 | 12 | 2 PLC (pompa & katup) |
+| 3 | 🏦 Korporat Enterprise | Standar | 3 | 12 | DB Finance & HR |
+| 4 | 🏥 Rumah Sakit (IoMT) | Lanjutan | 3 | 12 | EHR & server PACS |
+| 5 | 🏭 Pabrik Manufaktur | Lanjutan | 4 | 15 | PLC robot + 2 Safety SIS |
+| 6 | ⚡ Jaringan Listrik (SCADA) | Ahli | 4 | 17 | SCADA master, relay, field PLC |
+| 7 | 🛢️ Pipa Minyak & Gas | Ahli | 5 | 18 | SCADA, RTU pompa, ESD safety |
+
+Setiap skenario punya narasi ancaman, sumber daya awal, dan batas ronde sendiri.
+Balance tiap peta disetel lewat simulasi AI-vs-AI (≈1.000 game/peta) agar kompetitif.
+
 ## ✨ Fitur (termasuk tambahan di luar konsep aslinya)
 
 - ✅ **Dua sisi dapat dimainkan** (Blue atau Red) melawan **AI** heuristik.
+- ✅ **7 skenario** bertema (IT, ICS/OT, healthcare, SCADA, pipeline) dengan kedalaman 2–5 lapis.
 - ✅ **3 tingkat kesulitan** (Mudah / Normal / Sulit) yang memengaruhi efektivitas AI lawan.
-- ✅ **Peta jaringan berlapis** (DMZ/IT/OT) dengan aset realistis: firewall, VPN, web server, mail, workstation, Domain Controller, SIEM, HMI, Historian, dan **PLC** sebagai crown jewels.
+- ✅ **Peta jaringan berlapis** dengan aset realistis: firewall, VPN, web server, mail, workstation, Domain Controller, SIEM, HMI, Historian, PLC/RTU/SIS, EHR/PACS, dll — target akhir = **crown jewels**.
 - ✅ **Sistem sumber daya**: anggaran, staff, gaji, Hacker Resources, Action Points.
 - ✅ **Fog-of-war untuk Red**: aset tersembunyi sampai ditemukan lewat recon.
 - ✅ **Mekanik deteksi**: IDS + SIEM, serangan berpeluang terungkap → Threat Intel.

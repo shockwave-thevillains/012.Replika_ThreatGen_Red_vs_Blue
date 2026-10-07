@@ -15,16 +15,16 @@ const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls)
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 /* ---------------------------------------------------------------- Menu ---*/
-function startGame(humanSide, difficulty) {
+function startGame(humanSide, difficulty, scenarioId) {
   const aiSide = humanSide === 'blue' ? 'red' : 'blue';
-  G = createGame({ humanSide, aiSide, difficulty });
+  G = createGame({ humanSide, aiSide, difficulty, scenarioId });
   G.phase = 'playing';
   pendingAction = null;
   $('#menu').classList.add('hidden');
   $('#game').classList.remove('hidden');
-  logEvent(G, humanSide, `Game dimulai. Anda bermain sebagai ${humanSide === 'blue' ? 'BLUE (Defender)' : 'RED (Attacker)'} — tingkat ${difficulty.toUpperCase()}.`);
+  logEvent(G, humanSide, `Skenario "${G.scenario.name}" dimulai. Anda ${humanSide === 'blue' ? 'BLUE (Defender)' : 'RED (Attacker)'} — tingkat ${difficulty.toUpperCase()}.`);
+  if (G.scenario.threat) logEvent(G, 'info', `🎭 ${G.scenario.threat}`);
   render();
-  // bila giliran pertama milik AI (jika human = red, blue mulai → AI)
   maybeRunAI();
 }
 
@@ -40,6 +40,7 @@ function render() {
 }
 
 function renderTopBar() {
+  const sc = $('#scenInfo'); if (sc) sc.textContent = `${G.scenario.icon} ${G.scenario.name}`;
   $('#roundInfo').textContent = `Ronde ${G.round} / ${G.maxRounds}`;
   const t = $('#turnInfo');
   const isHuman = G.turn === G.humanSide;
@@ -78,7 +79,10 @@ function renderMeters() {
 /* Network board */
 function renderNetwork() {
   const wrap = $('#network'); wrap.innerHTML = '';
-  ZONES.forEach(z => {
+  // kolom per zona sesuai kedalaman skenario (kecuali internet)
+  const zcount = G.zones.length - 1;
+  wrap.style.setProperty('--zcount', zcount);
+  G.zones.forEach(z => {
     if (z.id === 'internet') return;
     const col = el('div', 'zone');
     col.style.setProperty('--zc', z.color);
@@ -204,7 +208,8 @@ function onAssetClick(a) {
   const act = (G.humanSide === 'blue' ? BLUE_ACTIONS : RED_ACTIONS).find(x => x.id === actId);
   // untuk aksi target zona, klik aset = pilih zonanya
   let targetId = a.id;
-  if (act.target === 'zone' || act.target === 'reachZone' || act.target === 'pivotZone') targetId = a.zone;
+  const zoneTargets = ['zone', 'reachZone', 'pivotZone', 'socialZone', 'physicalZone'];
+  if (zoneTargets.includes(act.target)) targetId = a.zone;
   execHuman(actId, targetId);
 }
 
@@ -267,11 +272,29 @@ function backToMenu() {
 }
 
 /* --------------------------------------------------------------- Init ---*/
+function buildScenarioPicker() {
+  const sel = $('#scenario'); if (!sel) return;
+  const tierLabel = { intro: 'Intro', standard: 'Standar', advanced: 'Lanjutan', expert: 'Ahli' };
+  sel.innerHTML = SCENARIOS.map(s => {
+    const depth = s.zones.length - 1, crowns = s.assets.filter(a => a.crownJewel).length, assets = s.assets.length;
+    return `<option value="${s.id}">${s.icon} ${s.name} — ${tierLabel[s.tier]} · ${depth} lapis · ${assets} aset · ${crowns} target</option>`;
+  }).join('');
+  const updateInfo = () => {
+    const s = SCENARIOS.find(x => x.id === sel.value) || SCENARIOS[0];
+    const info = $('#scenInfoMenu');
+    if (info) info.innerHTML = `<b>${s.icon} ${s.name}</b> — ${s.summary}<br><span class="muted">🎭 ${s.threat}</span>`;
+  };
+  sel.addEventListener('change', updateInfo);
+  updateInfo();
+}
+
 function initUI() {
+  buildScenarioPicker();
   $$('.play-btn').forEach(btn => btn.addEventListener('click', () => {
     const side = btn.dataset.side;
     const diff = $('#difficulty').value;
-    startGame(side, diff);
+    const scenarioId = $('#scenario').value;
+    startGame(side, diff, scenarioId);
   }));
   $('#endTurnBtn').addEventListener('click', onEndTurn);
   $('#backBtn').addEventListener('click', backToMenu);
