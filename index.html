@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberClash: Red vs Blue</title>
+<meta name="description" content="Game strategi siber turn-based — Red Team vs Blue Team. Replika edukatif terinspirasi ThreatGEN: Red vs. Blue.">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+</head>
+<body>
+
+<!-- ============ MENU ============ -->
+<section id="menu">
+  <div class="menu-card">
+    <h1>🛡️ CyberClash <span class="vs">⚔️</span> <span class="red">Red</span> vs <span class="blue">Blue</span></h1>
+    <p class="tagline">Game strategi keamanan siber turn-based. Bertahan atau meretas — pilih sisimu.</p>
+
+    <div class="side-pick">
+      <button class="play-btn blue-side" data-side="blue">
+        <span class="ps-ico">🛡️</span>
+        <span class="ps-title">BLUE TEAM</span>
+        <span class="ps-sub">Defender — bangun pertahanan, deteksi &amp; usir penyerang</span>
+      </button>
+      <button class="play-btn red-side" data-side="red">
+        <span class="ps-ico">👾</span>
+        <span class="ps-title">RED TEAM</span>
+        <span class="ps-sub">Attacker — intai, retas, dan kuasai PLC (crown jewels)</span>
+      </button>
+    </div>
+
+    <div class="diff-row">
+      <label for="difficulty">Tingkat AI lawan:</label>
+      <select id="difficulty">
+        <option value="easy">Mudah</option>
+        <option value="normal" selected>Normal</option>
+        <option value="hard">Sulit</option>
+      </select>
+      <button id="helpBtn" class="btn ghost">❓ Cara Main</button>
+    </div>
+
+    <p class="credit">Replika edukatif non-komersial, terinspirasi oleh <b>ThreatGEN: Red vs. Blue</b>.</p>
+  </div>
+</section>
+
+<!-- ============ GAME ============ -->
+<section id="game" class="hidden">
+  <header class="topbar">
+    <button id="backBtn" class="btn ghost small">← Menu</button>
+    <span id="roundInfo" class="round-info">Ronde 1 / 75</span>
+    <span id="turnInfo" class="turn-badge blue">Giliran: BLUE</span>
+    <div class="top-right">
+      <button id="helpBtn2" class="btn ghost small" onclick="document.getElementById('helpModal').classList.toggle('hidden')">❓</button>
+      <button id="endTurnBtn" class="btn primary">Akhiri Giliran ⏭️</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- kolom kiri: meters + log -->
+    <aside class="sidebar">
+      <div class="panel meters blue-panel">
+        <h3>🛡️ Blue Team</h3>
+        <div id="blueMeters"></div>
+      </div>
+      <div class="panel meters red-panel">
+        <h3>👾 Red Team</h3>
+        <div id="redMeters"></div>
+      </div>
+      <div class="panel log-panel">
+        <h3>📜 Log Kejadian</h3>
+        <div id="log" class="log"></div>
+      </div>
+    </aside>
+
+    <!-- tengah: network board -->
+    <main class="board-area">
+      <div class="panel">
+        <h3>🌐 Peta Jaringan <span class="muted">(Internet → DMZ → IT → OT)</span></h3>
+        <div id="network" class="network"></div>
+      </div>
+    </main>
+
+    <!-- kanan: aksi -->
+    <section id="actionPanel" class="panel action-panel"></section>
+  </div>
+
+  <div id="banner" class="banner"></div>
+  <div id="toast" class="toast"></div>
+</section>
+
+<!-- ============ HELP ============ -->
+<div id="helpModal" class="modal hidden">
+  <div class="modal-card">
+    <button id="closeHelp" class="modal-close">✕</button>
+    <h2>❓ Cara Bermain</h2>
+    <p>Permainan turn-based: <b>Blue</b> (bertahan) dan <b>Red</b> (menyerang) bergiliran. Tiap giliran Anda punya <b>Action Points (AP)</b> untuk memainkan aksi.</p>
+    <h3>🛡️ Blue Team (Defender)</h3>
+    <ul>
+      <li>Kelola <b>anggaran</b> &amp; <b>staff</b> untuk membangun pertahanan berlapis.</li>
+      <li>Mulai dari <b>Kebijakan &amp; Prosedur</b> → membuka aksi lanjutan.</li>
+      <li>Pasang <b>IDS</b> &amp; <b>SIEM</b> untuk mendeteksi serangan → menaikkan <b>Threat Intel</b>.</li>
+      <li><b>Menang bila:</b> Threat Intel capai 100% (Red tertangkap), semua kerentanan ditambal tanpa aset dikuasai, atau bertahan 75 ronde.</li>
+      <li><b>Kalah bila:</b> P/L jatuh ke 0, atau kedua PLC dikuasai Red.</li>
+    </ul>
+    <h3>👾 Red Team (Attacker)</h3>
+    <ul>
+      <li>Gunakan <b>Hacker Resources</b>. Mulai <b>OSINT</b> → temukan aset DMZ.</li>
+      <li>Jalur: <b>Cyber</b> (scan → exploit → pivot), <b>Social</b> (phishing), <b>Physical</b> (USB drop).</li>
+      <li>Tembus zona demi zona hingga <b>OT</b>, lalu kuasai kedua <b>PLC</b>.</li>
+      <li><b>Menang bila:</b> menguasai kedua PLC, atau menjatuhkan P/L Blue ke 0 (lewat DoS/kompromi).</li>
+      <li>Hati-hati: aksi di zona ber-IDS bisa terdeteksi &amp; menaikkan Threat Intel Blue.</li>
+    </ul>
+    <p class="muted">Klik kartu aksi, lalu (bila perlu) klik aset/zona di peta sebagai target.</p>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>
